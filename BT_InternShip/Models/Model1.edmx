@@ -1,0 +1,267 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="DBManagementModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="BRANDTable">
+          <Key>
+            <PropertyRef Name="BRAND_ID" />
+          </Key>
+          <Property Name="BRAND_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BRAND_NAME" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="CATEGORYTable">
+          <Key>
+            <PropertyRef Name="CATEGORY_ID" />
+          </Key>
+          <Property Name="CATEGORY_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CATEGORY_NAME" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="PRODUCTTable">
+          <Key>
+            <PropertyRef Name="PRODUCT_ID" />
+          </Key>
+          <Property Name="PRODUCT_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PRODUCT_CODE" Type="varchar" MaxLength="10" />
+          <Property Name="PRODUCT_NAME" Type="nvarchar" MaxLength="100" />
+          <Property Name="PRODUCT_IMAGE" Type="nvarchar(max)" />
+          <Property Name="PRODUCT_DESCRIPTION" Type="nvarchar(max)" />
+          <Property Name="CATEGORY_ID" Type="int" />
+          <Property Name="BRAND_ID" Type="int" />
+          <Property Name="DATECREATE" Type="datetime" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="USERTABLE">
+          <Key>
+            <PropertyRef Name="User_Id" />
+          </Key>
+          <Property Name="User_Id" Type="int" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="255" />
+          <Property Name="Password" Type="nvarchar" MaxLength="255" />
+          <Property Name="DateLogin" Type="datetime" />
+        </EntityType>
+        <Association Name="FK_PRODUCTTable_BRANDTable">
+          <End Role="BRANDTable" Type="Self.BRANDTable" Multiplicity="0..1" />
+          <End Role="PRODUCTTable" Type="Self.PRODUCTTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BRANDTable">
+              <PropertyRef Name="BRAND_ID" />
+            </Principal>
+            <Dependent Role="PRODUCTTable">
+              <PropertyRef Name="BRAND_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PRODUCTTable_CATEGORYTable">
+          <End Role="CATEGORYTable" Type="Self.CATEGORYTable" Multiplicity="0..1" />
+          <End Role="PRODUCTTable" Type="Self.PRODUCTTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CATEGORYTable">
+              <PropertyRef Name="CATEGORY_ID" />
+            </Principal>
+            <Dependent Role="PRODUCTTable">
+              <PropertyRef Name="CATEGORY_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DBManagementModelStoreContainer">
+          <EntitySet Name="BRANDTable" EntityType="Self.BRANDTable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CATEGORYTable" EntityType="Self.CATEGORYTable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PRODUCTTable" EntityType="Self.PRODUCTTable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="USERTABLE" EntityType="Self.USERTABLE" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_PRODUCTTable_BRANDTable" Association="Self.FK_PRODUCTTable_BRANDTable">
+            <End Role="BRANDTable" EntitySet="BRANDTable" />
+            <End Role="PRODUCTTable" EntitySet="PRODUCTTable" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PRODUCTTable_CATEGORYTable" Association="Self.FK_PRODUCTTable_CATEGORYTable">
+            <End Role="CATEGORYTable" EntitySet="CATEGORYTable" />
+            <End Role="PRODUCTTable" EntitySet="PRODUCTTable" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DBManagementModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="BRANDTable">
+          <Key>
+            <PropertyRef Name="BRAND_ID" />
+          </Key>
+          <Property Name="BRAND_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BRAND_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="PRODUCTTables" Relationship="Self.FK_PRODUCTTable_BRANDTable" FromRole="BRANDTable" ToRole="PRODUCTTable" />
+        </EntityType>
+        <EntityType Name="CATEGORYTable">
+          <Key>
+            <PropertyRef Name="CATEGORY_ID" />
+          </Key>
+          <Property Name="CATEGORY_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CATEGORY_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="PRODUCTTables" Relationship="Self.FK_PRODUCTTable_CATEGORYTable" FromRole="CATEGORYTable" ToRole="PRODUCTTable" />
+        </EntityType>
+        <EntityType Name="PRODUCTTable">
+          <Key>
+            <PropertyRef Name="PRODUCT_ID" />
+          </Key>
+          <Property Name="PRODUCT_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PRODUCT_CODE" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="PRODUCT_NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="PRODUCT_IMAGE" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PRODUCT_DESCRIPTION" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CATEGORY_ID" Type="Int32" />
+          <Property Name="BRAND_ID" Type="Int32" />
+          <Property Name="DATECREATE" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="BRANDTable" Relationship="Self.FK_PRODUCTTable_BRANDTable" FromRole="PRODUCTTable" ToRole="BRANDTable" />
+          <NavigationProperty Name="CATEGORYTable" Relationship="Self.FK_PRODUCTTable_CATEGORYTable" FromRole="PRODUCTTable" ToRole="CATEGORYTable" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="USERTABLE">
+          <Key>
+            <PropertyRef Name="User_Id" />
+          </Key>
+          <Property Name="User_Id" Type="Int32" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="DateLogin" Type="DateTime" Precision="3" />
+        </EntityType>
+        <Association Name="FK_PRODUCTTable_BRANDTable">
+          <End Role="BRANDTable" Type="Self.BRANDTable" Multiplicity="0..1" />
+          <End Role="PRODUCTTable" Type="Self.PRODUCTTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BRANDTable">
+              <PropertyRef Name="BRAND_ID" />
+            </Principal>
+            <Dependent Role="PRODUCTTable">
+              <PropertyRef Name="BRAND_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PRODUCTTable_CATEGORYTable">
+          <End Role="CATEGORYTable" Type="Self.CATEGORYTable" Multiplicity="0..1" />
+          <End Role="PRODUCTTable" Type="Self.PRODUCTTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CATEGORYTable">
+              <PropertyRef Name="CATEGORY_ID" />
+            </Principal>
+            <Dependent Role="PRODUCTTable">
+              <PropertyRef Name="CATEGORY_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DBManagementEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="BRANDTables" EntityType="Self.BRANDTable" />
+          <EntitySet Name="CATEGORYTables" EntityType="Self.CATEGORYTable" />
+          <EntitySet Name="PRODUCTTables" EntityType="Self.PRODUCTTable" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+          <EntitySet Name="USERTABLEs" EntityType="Self.USERTABLE" />
+          <AssociationSet Name="FK_PRODUCTTable_BRANDTable" Association="Self.FK_PRODUCTTable_BRANDTable">
+            <End Role="BRANDTable" EntitySet="BRANDTables" />
+            <End Role="PRODUCTTable" EntitySet="PRODUCTTables" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PRODUCTTable_CATEGORYTable" Association="Self.FK_PRODUCTTable_CATEGORYTable">
+            <End Role="CATEGORYTable" EntitySet="CATEGORYTables" />
+            <End Role="PRODUCTTable" EntitySet="PRODUCTTables" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DBManagementModelStoreContainer" CdmEntityContainer="DBManagementEntities">
+          <EntitySetMapping Name="BRANDTables">
+            <EntityTypeMapping TypeName="DBManagementModel.BRANDTable">
+              <MappingFragment StoreEntitySet="BRANDTable">
+                <ScalarProperty Name="BRAND_ID" ColumnName="BRAND_ID" />
+                <ScalarProperty Name="BRAND_NAME" ColumnName="BRAND_NAME" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CATEGORYTables">
+            <EntityTypeMapping TypeName="DBManagementModel.CATEGORYTable">
+              <MappingFragment StoreEntitySet="CATEGORYTable">
+                <ScalarProperty Name="CATEGORY_ID" ColumnName="CATEGORY_ID" />
+                <ScalarProperty Name="CATEGORY_NAME" ColumnName="CATEGORY_NAME" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PRODUCTTables">
+            <EntityTypeMapping TypeName="DBManagementModel.PRODUCTTable">
+              <MappingFragment StoreEntitySet="PRODUCTTable">
+                <ScalarProperty Name="PRODUCT_ID" ColumnName="PRODUCT_ID" />
+                <ScalarProperty Name="PRODUCT_CODE" ColumnName="PRODUCT_CODE" />
+                <ScalarProperty Name="PRODUCT_NAME" ColumnName="PRODUCT_NAME" />
+                <ScalarProperty Name="PRODUCT_IMAGE" ColumnName="PRODUCT_IMAGE" />
+                <ScalarProperty Name="PRODUCT_DESCRIPTION" ColumnName="PRODUCT_DESCRIPTION" />
+                <ScalarProperty Name="CATEGORY_ID" ColumnName="CATEGORY_ID" />
+                <ScalarProperty Name="BRAND_ID" ColumnName="BRAND_ID" />
+                <ScalarProperty Name="DATECREATE" ColumnName="DATECREATE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="DBManagementModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="USERTABLEs">
+            <EntityTypeMapping TypeName="DBManagementModel.USERTABLE">
+              <MappingFragment StoreEntitySet="USERTABLE">
+                <ScalarProperty Name="User_Id" ColumnName="User_Id" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="DateLogin" ColumnName="DateLogin" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

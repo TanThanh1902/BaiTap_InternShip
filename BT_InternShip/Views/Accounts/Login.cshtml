@@ -1,0 +1,48 @@
+﻿@model BT_InternShip.Models.SignIn
+
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div style="border: 2px solid #EEEEEE; width: 50%">
+    <div style="margin-top: 50px">
+        <h3 style="text-transform: uppercase; font-weight: 700">Login</h3>
+    </div>
+    <div style="margin-top: 100px; padding: 0px 50px 50px 50px">
+        @if (ViewBag.Notification != null)
+        {
+            <div class="alert alert-danger">
+                @ViewBag.Notification
+            </div>
+        }
+        @using (Html.BeginForm("Login", "Accounts", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+
+            <span style=" float: left"><i class="fa fa-envelope">&nbsp;</i>Email</span>
+            <div>
+                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+            </div>
+            <span style=" float: left"><i class="fa fa-unlock-alt">&nbsp;</i>Password</span>
+            <div>
+                @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+            </div>
+            <input type="hidden" value="@HttpContext.Current.Request.Url.AbsoluteUri" name="ReturnUrl" />
+            <br /><br /><br />
+            <input type="submit" value="Login" class="btn btn-success" style="width: 100%" />
+            <span>or</span>
+
+            <div class="row">
+                <div style="float: left" class="col-sm-6">
+                    <a class="btn btn-danger" style="width: 100%; color: white"><i class="fab fa-google"> - Google</i></a>
+                </div>
+                <div style="float: right" class="col-sm-6">
+                    <a class="btn btn-danger" style="width: 100%; background: black"><i class="fab fa-github-alt"> - Github</i></a>
+                </div>
+            </div>
+        }
+    </div>
+</div>

@@ -1,0 +1,88 @@
+﻿@model IEnumerable<BT_InternShip.Models.PRODUCTTable>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var itemDel = "delete";
+}
+
+<h2 style="color: red; text-transform: uppercase; font-weight: 800">product</h2>
+
+<div style="float: left">
+    <a href="@Url.Action("Create")" class="btn btn-success">Add product <i class="fa fa-plus-circle"></i></a>
+</div>
+<br />
+<br />
+<table class="table table-striped" style="text-align: center">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.PRODUCT_CODE)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PRODUCT_NAME)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PRODUCT_IMAGE)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BRANDTable.BRAND_NAME)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CATEGORYTable.CATEGORY_NAME)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DATECREATE)
+        </th>
+        <th>CUSTOM</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.PRODUCT_CODE)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PRODUCT_NAME)
+            </td>
+            <td>
+                <img src="~/Content/images/produtcs/@item.PRODUCT_IMAGE" style="width: 100px; height: 100px" alt="@item.PRODUCT_NAME" />
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BRANDTable.BRAND_NAME)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CATEGORYTable.CATEGORY_NAME)
+            </td>
+            <td>
+                @item.DATECREATE.Value.ToLongDateString()
+            </td>
+            <td>
+                <a href="@Url.Action("Edit", "Admin_Product", new { id = item.PRODUCT_ID})"><i class="fa fa-pencil-alt"></i></a> |
+                <a href="#" data-toggle="modal" data-target="#@itemDel@item.PRODUCT_ID"><i class="fa fa-trash-alt"></i></a>
+
+                <!-- Modal -->
+                <div class="modal fade" id="@itemDel@item.PRODUCT_ID" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <form class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title" style="text-transform: uppercase; color: orange" id="exampleModalLabel"><i class="fa fa-exclamation-triangle">&nbsp;</i>Warning</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                Are you sure deleted this product ?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                                <a href="@Url.Action("DeleteConfirmed", "Admin_Product", new { id = item.PRODUCT_ID})" type="button" class="btn btn-danger">Delete alway</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    }
+
+</table>
