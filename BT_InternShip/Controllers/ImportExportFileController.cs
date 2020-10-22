@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Services.Description;
+using BT_InternShip.Models;
 using BT_InternShip.Models.Interface;
 using Newtonsoft.Json;
 
@@ -34,7 +35,22 @@ namespace BT_InternShip.Controllers
                     }
                 }
             }
-            foreach(KeyValuePair<string, string> item in dict)
+            Dictionary<string, object> objDict = new Dictionary<string, object>();
+            CustomerObj obj = new CustomerObj();
+            foreach (KeyValuePair<string, string> item_json in items)
+            {
+                foreach (var prop in obj.GetType().GetProperties())
+                {
+                    if (item_json.Value == prop.Name)
+                    {
+                        // kiểm tra dữ liệu nhập vào.
+
+                        // thêm vào dictionary
+                        dict.Add(prop.Name, item_json.Value);
+                    }
+                }
+            }
+            foreach (KeyValuePair<string, object> item in objDict)
             {
                 ViewBag.showDict += "{ key: " + item.Key + " value: " + item.Value + " }";
             }
